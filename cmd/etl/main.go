@@ -92,7 +92,7 @@ func (r *Runner) runHandler(w http.ResponseWriter, req *http.Request)  {
 	r.mu.Unlock()
 
 	type runRequest struct {
-		jobUUID		string `json:"job_uuid"`
+		JobUUID		string `json:"job_uuid"`
 		Name		string `json:"name"`
 		TargetTable string `json:"target_table"`
 	}
@@ -106,7 +106,7 @@ func (r *Runner) runHandler(w http.ResponseWriter, req *http.Request)  {
 		return
 	}
 
-	if body.jobUUID == "" {
+	if body.JobUUID == "" {
 		r.mu.Lock()
 		r.running = false
 		r.mu.Unlock()
@@ -124,7 +124,7 @@ func (r *Runner) runHandler(w http.ResponseWriter, req *http.Request)  {
 		if err := r.etl.Run(context.Background(), jobUUID); err != nil {
 			log.Println("etl failed:", err)
 		}
-	}(body.jobUUID)
+	}(body.JobUUID)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusAccepted)
